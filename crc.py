@@ -118,7 +118,7 @@ FF FF 60 FF FF FF FF FF FF 20 3F 00 FF FF 3F 00
 E3 05 A6 6F 04 CC 2D 4A B8 B0 00 00 2B E1 64 01""")
     # should be D6 4D D1
     b = ''.join(map(str, crc(data)))
-    print('Memory descriptor:')
+    print('Flash block ECC:')
     print('bin:\t' + b)
     print('hex:\t' + hex(int(b, 2)))
 
