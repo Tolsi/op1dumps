@@ -134,9 +134,10 @@ D1 FF FF FF FF FF
 """)
     print('Flash block ECC:')
     res = crc(data)
-    print('Result (hex):\t0x' + ''.join(tohex(x, 2) for x in res))
+    h = '0x' + ''.join(tohex(x, 2) for x in res)
+    print('Result (hex):\t' + h)
 
-    if res[0] == 0x78 and res[1] == 0xC7 and res[2] == 0xFB:
+    if h == '0x78c7fb':
         print('Found!')
     else:
         print(':<')
