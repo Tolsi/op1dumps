@@ -81,6 +81,7 @@ def crc(data):
         else:
             LP14 = line ^ LP14
 
+        # only for 512+ by doc
         if (i & 0xA0):
             LP17 = line ^ LP17
         else:
