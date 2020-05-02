@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 import itertools
+import sys
+
+import bchlib
 
 column_parity_table = [
     0x00, 0x55, 0x59, 0x0c, 0x65, 0x30, 0x3c, 0x69,
@@ -36,63 +39,9 @@ column_parity_table = [
     0x69, 0x3c, 0x30, 0x65, 0x0c, 0x59, 0x55, 0x00,
 ]
 
-def crc(data):
-    col_parity = 0
-    line_parity = 0
-    line_parity_prime = 0
-    t=0
-    b=0
-
-    for i in range(0, 256):
-        b = column_parity_table[data[i]]
-        col_parity ^= b;
-
-        if (b & 0x01): #	/* odd number of bits in the byte */
-            line_parity ^= i
-            line_parity_prime ^= ~i
-
-    ecc = [0,0,0]
-    ecc[2] = (~col_parity) | 0x03;
-
-    t = 0;
-    if (line_parity & 0x80):
-        t |= 0x80;
-    if (line_parity_prime & 0x80):
-        t |= 0x40;
-    if (line_parity & 0x40):
-        t |= 0x20;
-    if (line_parity_prime & 0x40):
-        t |= 0x10;
-    if (line_parity & 0x20):
-        t |= 0x08;
-    if (line_parity_prime & 0x20):
-        t |= 0x04;
-    if (line_parity & 0x10):
-        t |= 0x02;
-    if (line_parity_prime & 0x10):
-        t |= 0x01;
-    ecc[1] = ~t;
-
-    t = 0;
-    if (line_parity & 0x08):
-        t |= 0x80;
-    if (line_parity_prime & 0x08):
-        t |= 0x40;
-    if (line_parity & 0x04):
-        t |= 0x20;
-    if (line_parity_prime & 0x04):
-        t |= 0x10;
-    if (line_parity & 0x02):
-        t |= 0x08;
-    if (line_parity_prime & 0x02):
-        t |= 0x04;
-    if (line_parity & 0x01):
-        t |= 0x02;
-    if (line_parity_prime & 0x01):
-        t |= 0x01;
-    ecc[0] = ~t;
-
-    return ecc
+def crc(data, pol, bits):
+    bch = bchlib.BCH(pol, bits)
+    return bch.encode(data)
 
 if __name__ == '__main__':
     data = bytes.fromhex("""06 50 5F AD 00 00 A0 FF 00 00 00 00 F0 0B 00 00
@@ -112,5 +61,15 @@ FF FF 60 FF FF FF FF FF FF 20 3F 00 FF FF 3F 00
 00 00 A0 FF CC 09 00 00 00 00 00 00 00 E8 04 00
 E3 05 A6 6F 04 CC 2D 4A B8 B0 00 00 2B E1 64 01""")
     # should be D6 4D D1
-    print('Flash block ECC:')
-    print('hex:\t' + ''.join(map(str, crc(data))))
+    for b in [3]:
+        for i in range(1, sys.maxsize):
+            print(i)
+            try:
+                res = crc(data, i, b)
+                if res[0] == 0xD6 and res[1] == 0x4D and res[2] == 0xD1:
+                    print('Done!')
+                    print(i)
+                    print(b)
+                    sys.exit(0)
+            except:
+                i = 0
