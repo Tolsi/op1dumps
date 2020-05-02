@@ -82,10 +82,11 @@ def crc(data):
             LP14 = line ^ LP14
 
         # only for 512+ by doc
-        if (i & 0xA0):
-            LP17 = line ^ LP17
-        else:
-            LP16 = line ^ LP16
+        if (len(data) >= 512):
+            if (i & 0xA0):
+                LP17 = line ^ LP17
+            else:
+                LP16 = line ^ LP16
 
         CP0 = bit6 ^ bit4 ^ bit2 ^ bit0 ^ CP0
         CP1 = bit7 ^ bit5 ^ bit3 ^ bit1 ^ CP1
