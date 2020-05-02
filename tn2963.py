@@ -29,7 +29,7 @@ def crc(data):
     CP1 = 0
     CP0 = 0
 
-    for i in range(0, 256):
+    for i in range(0, len(data)):
         bits = format(data[i], '08b')
         bit0 = int(bits[7], 2)
         bit1 = int(bits[6], 2)
@@ -81,11 +81,10 @@ def crc(data):
         else:
             LP14 = line ^ LP14
 
-        # for 512
-        # if (i & 0xA0):
-        #     LP17 = line ^ LP17
-        # else:
-        #     LP16 = line ^ LP16
+        if (i & 0xA0):
+            LP17 = line ^ LP17
+        else:
+            LP16 = line ^ LP16
 
         CP0 = bit6 ^ bit4 ^ bit2 ^ bit0 ^ CP0
         CP1 = bit7 ^ bit5 ^ bit3 ^ bit1 ^ CP1
@@ -115,11 +114,32 @@ FF FF 60 FF FF FF FF FF FF 20 3F 00 FF FF 3F 00
 07 00 00 00 03 3F 01 00 10 74 03 00 50 87 54 14
 00 60 00 FF 00 FF 00 00 00 00 00 00 06 00 31 AD
 00 00 A0 FF CC 09 00 00 00 00 00 00 00 E8 04 00
-E3 05 A6 6F 04 CC 2D 4A B8 B0 00 00 2B E1 64 01""")
-    # should be D6 4D D1
+E3 05 A6 6F 04 CC 2D 4A B8 B0 00 00 2B E1 64 01
+4B E1 C0 FF 04 CC 24 48 1D 93 00 00 0F 60 2C E1
+24 01 4C E1 C0 FF 27 93 00 E3 F6 02 29 E1 08 32
+49 E1 C0 FF 48 95 40 4C 09 8A 28 E1 30 17 48 E1
+C0 FF 41 95 41 4A 40 8A 26 E1 00 01 2A E1 08 17
+4A E1 C0 FF 92 8B 0D E1 04 40 4D E1 80 FF 69 91
+1A 60 20 E1 D0 00 0D 9B 69 91 8D E6 01 00 69 91
+8D E6 02 00 69 91 8D E6 03 00 69 91 4D B0 8D B0
+8A B5 81 6C 49 30 0D 92 0D 92 0D 93 4D B0 8D B0
+CD B0 0D B1 51 30 00 E3 3D 02 69 91 89 A1 CA A1
+C9 B1 8A B1 09 A1 4A A1 49 B1 0A B1 00 E3 70 02
+00 E3 F2 02 D0 60 00 E3 F7 03 00 0C 00 02 08 E1
+00 40 48 E1 80 FF 00 9B 00 E3 8A 00 00 E3 32 01
+00 E3 02 01 00 E3 5E 00 00 E3 A8 01 4F 30 C1 67
+11 30 30 30 C1 67 20 E1 D8 00 00 E3 13 02 00 0C
+0C 18 B0 A2 F1 A2 08 56 00 0C 0C 60 06 10 30 A3
+71 A3 08 56 08 02 04 02 B9 AC 0C 0C 89 AE 03 10
+D1 FF FF FF FF FF
+""")
     b = ''.join(map(str, crc(data)))
+    h = hex(int(b, 2))
     print('Flash block ECC:')
-    print('bin:\t' + b)
-    print('hex:\t' + hex(int(b, 2)))
+    print('Result (hex):\t' + h)
 
-    assert(hex(int(b, 2)) == '0xd64dd1')
+    res = crc(data)
+    if h == '0x78c7fb':
+        print('Found!')
+    else:
+        print(':<')
