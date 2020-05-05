@@ -85,7 +85,7 @@ def crc(data):
                 counting16odd = True
                 counter16=0
         # P32 takes 32 bit from odd Bytecount, P32_1 takes 32 bits from even Bytecounts
-        if counting32odd == True:
+        if counting32odd:
             counter32 += 1
             P32  = P32  ^ bit0 ^ bit1 ^ bit2 ^ bit3 ^ bit4 ^ bit5 ^ bit6 ^ bit7
             if counter32 == 4:
@@ -98,7 +98,7 @@ def crc(data):
                 counting32odd = True
                 counter32=0
         # P64 takes 64 bit from odd Bytecount, P64_1 takes 64 bits from even Bytecounts
-        if counting64odd == True:
+        if counting64odd:
             counter64 += 1
             P64  = P64  ^ bit0 ^ bit1 ^ bit2 ^ bit3 ^ bit4 ^ bit5 ^ bit6 ^ bit7
             if counter64 == 8:
@@ -111,7 +111,7 @@ def crc(data):
                 counting64odd = True
                 counter64=0
         # P128 takes 128 bit from odd Bytecount, P128_1 takes 128 bits from even Bytecounts
-        if counting128odd == True:
+        if counting128odd:
             counter128 += 1
             P128  = P128  ^ bit0 ^ bit1 ^ bit2 ^ bit3 ^ bit4 ^ bit5 ^ bit6 ^ bit7
             if counter128 == 16:
@@ -124,7 +124,7 @@ def crc(data):
                 counting128odd = True
                 counter128=0
         # P256 takes 256 bit from odd Bytecount, P256_1 takes 256 bits from even Bytecounts
-        if counting256odd == True:
+        if counting256odd:
             counter256 += 1
             P256  = P256  ^ bit0 ^ bit1 ^ bit2 ^ bit3 ^ bit4 ^ bit5 ^ bit6 ^ bit7
             if counter256 == 32:
@@ -137,7 +137,7 @@ def crc(data):
                 counting256odd = True
                 counter256=0
         # P512 takes 512 bit from odd Bytecount, P512_1 takes 512 bits from even Bytecounts
-        if counting512odd == True:
+        if counting512odd:
             counter512 += 1
             P512  = P512  ^ bit0 ^ bit1 ^ bit2 ^ bit3 ^ bit4 ^ bit5 ^ bit6 ^ bit7
             if counter512 == 64:
@@ -150,7 +150,7 @@ def crc(data):
                 counting512odd = True
                 counter512=0
         # P1024 takes 1024 bit from odd Bytecount, P1024_1 takes 1024 bits from even Bytecounts
-        if counting1024odd == True:
+        if counting1024odd:
             counter1024 += 1
             P1024  = P1024  ^ bit0 ^ bit1 ^ bit2 ^ bit3 ^ bit4 ^ bit5 ^ bit6 ^ bit7
             if counter1024 == 128:
