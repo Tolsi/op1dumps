@@ -31,5 +31,8 @@ if __name__ == '__main__':
                 if not (is_ff(i_data) and is_ff(i_ecc)):
                     calc_ecc = ADSP_ecc.crc(i_data)
                     if i_ecc != calc_ecc:
-                        print('Bad block detected! block %d, page %d, piece %d: %s != %s' % (block, page, i, binascii.hexlify(i_ecc), binascii.hexlify(calc_ecc)))
+                        print('Wrong ECC detected! Fixing: block %d, page %d, piece %d: %s -> %s' % (block, page, i, binascii.hexlify(i_ecc), binascii.hexlify(calc_ecc)))
+                        filebytes[start_index + data_size + i * 8] = calc_ecc[0]
+                        filebytes[start_index + data_size + i * 8+1] = calc_ecc[1]
+                        filebytes[start_index + data_size + i * 8+2] = calc_ecc[2]
     print('Done!')
