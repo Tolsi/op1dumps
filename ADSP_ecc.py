@@ -20,7 +20,7 @@ def getbytes(bits):
 
 # crude test implementation of BF5xx ECC code
 # returns 3 bytes ECC in little endian
-def crc(data):
+def ecc(data):
     P1 = 0
     P2 = 0
     P4 = 0
@@ -218,13 +218,13 @@ C9 B1 8A B1 09 A1 4A A1 49 B1 0A B1 00 E3 70 02
 0C 18 B0 A2 F1 A2 08 56 00 0C 0C 60 06 10 30 A3
 71 A3 08 56 08 02 04 02 B9 AC 0C 0C 89 AE 03 10
 """)
-    h = binascii.hexlify(crc(data1))
+    h = binascii.hexlify(ecc(data1))
     print('data1 len:' + str(len(data1)))
     print('Flash block ECC:')
     print('Result (hex):\t%s' % h)
     assert(h == b'd64dd1')
 
-    h2 = binascii.hexlify(crc(data2))
+    h2 = binascii.hexlify(ecc(data2))
     print('data2 len:' + str(len(data2)))
     print('Flash block ECC:')
     print('Result (hex):\t%s' % h2)
