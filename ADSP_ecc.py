@@ -1,12 +1,25 @@
 #!/usr/bin/env python3
+import binascii
 import itertools
-
-# crude test implementation of BF5xx ECC code
-# FIXME: has to be beautified by someone with better python knowledge
 
 # NOTE: the blackfin is a little endian system, so the ECC has to be swapped to match the values
 #       from a flash dump. Also it seems that the "rest" of the value is filled with 1 (padded)
 
+def getbytes(bits):
+    done = False
+    while not done:
+        byte = 0
+        for _ in range(0, 8):
+            try:
+                bit = next(bits)
+            except StopIteration:
+                bit = 0
+                done = True
+            byte = (byte << 1) | bit
+        yield byte
+
+# crude test implementation of BF5xx ECC code
+# returns 3 bytes ECC in little endian
 def crc(data):
     P1 = 0
     P2 = 0
@@ -167,7 +180,7 @@ def crc(data):
     Ecc0 = [P1024, P512, P256, P128, P64, P32, P16, P8, P4, P2, P1]
     # NOTE: padded with 1s to fill 24 bits
     Ecc1 = [1,1,P1024_1, P512_1, P256_1, P128_1, P64_1, P32_1, P16_1, P8_1, P4_1, P2_1, P1_1]
-    return list(itertools.chain.from_iterable([Ecc1, Ecc0]))
+    return bytearray(list(reversed(list(getbytes(itertools.chain.from_iterable([Ecc1, Ecc0])))))[1:4])
 
 if __name__ == '__main__':
     data1 = bytes.fromhex("""06 50 5F AD 00 00 A0 FF 00 00 00 00 F0 0B 00 00
@@ -205,15 +218,14 @@ C9 B1 8A B1 09 A1 4A A1 49 B1 0A B1 00 E3 70 02
 0C 18 B0 A2 F1 A2 08 56 00 0C 0C 60 06 10 30 A3
 71 A3 08 56 08 02 04 02 B9 AC 0C 0C 89 AE 03 10
 """)
-    b = ''.join(map(str, crc(data1)))
-    h = hex(int(b, 2))
+    h = binascii.hexlify(crc(data1))
     print('data1 len:' + str(len(data1)))
     print('Flash block ECC:')
-    print('Result (hex):\t' + h)
+    print('Result (hex):\t%s' % h)
+    assert(h == b'd64dd1')
 
-    b2 = ''.join(map(str, crc(data2)))
-    h2 = hex(int(b2, 2))
+    h2 = binascii.hexlify(crc(data2))
     print('data2 len:' + str(len(data2)))
     print('Flash block ECC:')
-    print('Result (hex):\t' + h2)
-
+    print('Result (hex):\t%s' % h2)
+    assert(h2 == b'78c7fb')
