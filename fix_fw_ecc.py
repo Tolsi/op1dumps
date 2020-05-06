@@ -11,7 +11,7 @@ def is_ff(data):
     return True
 
 if __name__ == '__main__':
-    file = '/Users/tolsi/Documents/op-1-rev/MT29F4G08ABBDA@BGA63_2131_without_3627_BB.BIN'
+    file = '/Users/tolsi/Documents/op-1-rev/MT29F4G08ABBDA@BGA63_2131_without_3627_BB_patched.BIN'
     filebytes = array.array('B')
     filebytes.fromfile(open(file, 'rb'), Path(file).stat().st_size)
 
@@ -20,6 +20,7 @@ if __name__ == '__main__':
     page_size = data_size + ecc_size
     block_size = page_size * 64
 
+    changed = False
     for block in range(0, 4096):
         for page in range(0, 64):
             start_index = block * block_size + page_size * page
@@ -35,4 +36,8 @@ if __name__ == '__main__':
                         filebytes[start_index + data_size + i * 8] = calc_ecc[0]
                         filebytes[start_index + data_size + i * 8+1] = calc_ecc[1]
                         filebytes[start_index + data_size + i * 8+2] = calc_ecc[2]
+                        changed = True
+    if changed:
+        with open(file, "wb") as f:
+            f.write(filebytes.tobytes())
     print('Done!')
