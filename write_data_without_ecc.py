@@ -1,0 +1,34 @@
+import array
+import binascii
+from pathlib import Path
+
+import ADSP_ecc
+
+def is_ff(data):
+    for b in data:
+        if b != 0xff:
+            return False
+    return True
+
+if __name__ == '__main__':
+    file = '/Users/tolsi/Documents/op-1-rev/MT29F4G08ABBDA@BGA63_2131_without_3627_BB.BIN'
+    out_file = '/Users/tolsi/Documents/op-1-rev/MT29F4G08ABBDA@BGA63_2131_without_3627_BB_and_ECC.BIN'
+    filebytes = array.array('B')
+    filebytes.fromfile(open(file, 'rb'), Path(file).stat().st_size)
+
+    data_size = 256 * 8
+    ecc_size = 8 * 8
+    page_size = data_size + ecc_size
+    block_size = page_size * 64
+
+    with open(out_file, 'wb') as output:
+        for block in range(0, 4096):
+            for page in range(0, 64):
+                start_index = block * block_size + page_size * page
+                # data = filebytes[start_index:start_index + data_size]
+                # ecc = filebytes[start_index + data_size:start_index + page_size]
+                for i in range(0, 8):
+                    # i_ecc = filebytes[start_index + data_size + i * 8:start_index + data_size + i * 8 + 3]
+                    i_data = filebytes[start_index + i * 256: start_index + i * 256 + 256]
+                    output.write(i_data)
+    print('Done!')
