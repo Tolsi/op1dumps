@@ -28,4 +28,4 @@ Note that this requires 6.9-7V to be applied to the VPPOTP CPU pin for a short t
 
 Be sure to read the documentation for your processor before doing this. A data recorded once cannot be changed!
 
-* TE-OP-1-flash-dump-fw241-boot-ok-formated-fw-MT29F4G08ABBDA@BGA63_2131.BIN.zip - flash bump with worked boot v 2.27 and empty formatted firmware v2.41
+* TE-OP-1-flash-dump-fw241-boot-ok-formated-fw-MT29F4G08ABBDA@BGA63_2131.BIN.zip - flash bump with worked boot v2.27 and empty formatted firmware v2.41
