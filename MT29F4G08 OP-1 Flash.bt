@@ -1,0 +1,10 @@
+struct FLASH {
+    struct PLANE {
+        struct BLOCK {
+            struct PAGE {                struct MAIN {                    char    data[256];                } data[8];
+            
+                struct SPARE {
+                    char    ecc[3];
+                    char    empty[5];                } spare[8];            } page[64];
+        } block[2048];
+    } plane[2];} flash;
