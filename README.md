@@ -29,3 +29,11 @@ Note that this requires 6.9-7V to be applied to the VPPOTP CPU pin for a short t
 Be sure to read the documentation for your processor before doing this. A data recorded once cannot be changed!
 
 * TE-OP-1-flash-dump-fw241-boot-ok-formated-fw-MT29F4G08ABBDA@BGA63_2131.BIN.zip - flash bump with worked boot v2.27 and empty formatted firmware v2.41
+
+# Acknowledgments
+
+*[tabascoeye](https://github.com/tabascoeye) for help and previous experiments with the device and Blackfin tool building, reading OTP dump
+
+*Nanak0n aka Viktor89 for countless chip re-soldering on the knee and board analysis
+
+*Igor and Sergey - guys with the programmer for BGA63
