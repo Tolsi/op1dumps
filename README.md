@@ -32,8 +32,8 @@ Be sure to read the documentation for your processor before doing this. A data r
 
 # Acknowledgments
 
-*[tabascoeye](https://github.com/tabascoeye) for help and previous experiments with the device and Blackfin tool building, reading OTP dump
+* [tabascoeye](https://github.com/tabascoeye) for help and previous experiments with the device and Blackfin tool building, reading OTP dump
 
-*Nanak0n aka Viktor89 for countless chip re-soldering on the knee and board analysis
+* Nanak0n aka Viktor89 for countless chip re-soldering on the knee and board analysis
 
-*Igor and Sergey - guys with the programmer for BGA63
+* Igor and Sergey - guys with the programmer for BGA63
