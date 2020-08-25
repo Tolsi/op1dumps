@@ -75,6 +75,8 @@ They are marked with an exclamation mark in the dump.
 
 After writing 0xd8, the device will boot into the firmware (and this requires all previous entries), to enter te-boot again, you will need to hold down the COM button. Presumably 0x10-0x12 contains the code for start the firmware, and 0xd0-0xd3 for booting the device to the firmware. 0xdf is checked to validate the OTP record. The rest of the OTP pages data is the factory data about the processor.
 
+If you want my OP-1 IDA Pro projects for your research - just ask.
+
 # Acknowledgments
 
 * Nanak0n aka Viktor89 for countless chip re-soldering on the knee and board analysis
