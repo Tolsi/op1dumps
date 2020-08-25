@@ -32,6 +32,7 @@ Here's patched te-boot file to read and write a page to OP-1 OTP memory: `te-boo
 You must write page by page (about 12 pages total) by making changes to this file at the following addresses:
 
 `0x2d4d0-0x2d4df` - contains OTP data to write (little-endian)
+
 `0xa642` - contains OTP page to write
 
 Note that the system uses little endian, so you need to rearrange the bytes accordingly.
