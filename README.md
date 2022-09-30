@@ -24,7 +24,7 @@ Small useful utilities to work with flash and CPU OTP dumps obtained for TE OP-1
 
 * TE-OP-1-BF524-OTP-dump.txt - OTP little-endian dump should to be written to the empty Blackfin BF524 processor to restore device boot.
 
-* TE-OP-1-flash-dump-fw241-boot-ok-formated-fw-MT29F4G08ABBDA@BGA63_2131.BIN.zip - flash bump with worked boot v2.27 and empty formatted firmware v2.41
+* [TE-OP-1-flash-dump-fw241-boot-ok-formated-fw-MT29F4G08ABBDA@BGA63_2131.BIN.zip](https://github.com/Tolsi/op1dumps/raw/master/TE-OP-1-flash-dump-fw241-boot-ok-formated-fw-MT29F4G08ABBDA%40BGA63_2131.BIN.zip) - flash bump with worked boot v2.27 and empty formatted firmware v2.41
 
 # OTP write details
 
