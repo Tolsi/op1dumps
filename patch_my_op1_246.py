@@ -54,7 +54,10 @@ Usage:
 
 Then flash the resulting .op1 via COM+Power as usual.
 """
-import struct, sys, os, shutil
+import struct, sys, os, re, shutil
+
+VERSION_RE = re.compile(rb"Rev\. (\d{5});")
+MIN_VDK_PATCH_VERSION = 246  # firmware < 246 has no encrypted callback blocks at all
 
 TE_BOOT_PATTERN_OLD = bytes.fromhex("1a6020e1d0000d9b69918de60100 6991".replace(" ", ""))
 TE_BOOT_PATTERN_NEW = bytes.fromhex("1a6020e1e0000d9b69918de60100 6991".replace(" ", ""))
@@ -134,8 +137,19 @@ def patch_te_boot(path_in, path_out):
     print(f"  te-boot.ldr: patched OTP page 0xD0 -> 0xE0 read at file offset {idx:#x}")
 
 
+def detect_version(raw):
+    m = VERSION_RE.search(raw)
+    return int(m.group(1)) if m else None
+
+
 def patch_vdk(path_in, path_out, key):
     raw = open(path_in, "rb").read()
+    version = detect_version(raw)
+    if version is not None and version < MIN_VDK_PATCH_VERSION:
+        print(f"  OP1_vdk.ldr: detected firmware Rev. {version:05d} (< {MIN_VDK_PATCH_VERSION}), "
+              f"no encrypted callback blocks to patch -- copying as-is")
+        shutil.copy(path_in, path_out)
+        return
     blocks = walk_ldr_blocks(raw)
     out = bytearray(raw)
     n_patched = 0
