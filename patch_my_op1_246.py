@@ -62,6 +62,11 @@ MIN_VDK_PATCH_VERSION = 246  # firmware < 246 has no encrypted callback blocks a
 TE_BOOT_PATTERN_OLD = bytes.fromhex("1a6020e1d0000d9b69918de60100 6991".replace(" ", ""))
 TE_BOOT_PATTERN_NEW = bytes.fromhex("1a6020e1e0000d9b69918de60100 6991".replace(" ", ""))
 
+# The known-good OTP page 0xD0 value for my unit (same 16 bytes written to my
+# unit's OTP page 0xE0 as the D0->E0 workaround). Baked in as the default so
+# this doesn't need to be retyped on every run; override with --key if needed.
+DEFAULT_KEY_HEX = "c78a072a70a86234" + "5921a081159ce97b"
+
 
 def decipher(num_cycles, v0, v1, k):
     delta = 0x9E3779B9
@@ -172,10 +177,14 @@ def patch_vdk(path_in, path_out, key):
 
 
 def main():
-    if len(sys.argv) != 4:
+    args = sys.argv[1:]
+    if len(args) == 3:
+        key_hex, in_dir, out_dir = args
+    elif len(args) == 2:
+        key_hex, (in_dir, out_dir) = DEFAULT_KEY_HEX, args
+    else:
         print(__doc__)
         raise SystemExit(1)
-    key_hex, in_dir, out_dir = sys.argv[1:4]
     if len(key_hex) != 32:
         raise SystemExit(f"OTP key must be exactly 32 hex chars (16 bytes), got {len(key_hex)}")
     key = struct.unpack(">IIII", bytes.fromhex(key_hex))
